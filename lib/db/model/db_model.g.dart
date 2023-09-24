@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'dbmodel.dart';
+part of 'db_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
@@ -17,13 +17,12 @@ class studentModelAdapter extends TypeAdapter<studentModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return studentModel(
-      name: fields[0] as String,
-      coures: fields[1] as String,
-      age: fields[2] as String,
-      dateob: fields[4] as String,
-      email: fields[3] as String,
-      numb: fields[5] as String,
-    );
+      name: fields[1] as String,
+      coures: fields[2] as String,
+      age: fields[3] as String,
+      numb: fields[4] as String,
+      image: fields[5] as dynamic,
+    )..index = fields[0] as int?;
   }
 
   @override
@@ -31,17 +30,17 @@ class studentModelAdapter extends TypeAdapter<studentModel> {
     writer
       ..writeByte(6)
       ..writeByte(0)
-      ..write(obj.name)
+      ..write(obj.index)
       ..writeByte(1)
-      ..write(obj.coures)
+      ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.age)
+      ..write(obj.coures)
       ..writeByte(3)
-      ..write(obj.email)
+      ..write(obj.age)
       ..writeByte(4)
-      ..write(obj.dateob)
+      ..write(obj.numb)
       ..writeByte(5)
-      ..write(obj.numb);
+      ..write(obj.image);
   }
 
   @override

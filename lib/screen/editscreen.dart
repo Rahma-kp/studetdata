@@ -1,146 +1,154 @@
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:stud/db/functions/defunction.dart';
-import 'package:stud/db/model/dbmodel.dart';
+import 'package:stud/db/model/db_model.dart';
 import 'package:stud/screen/liststudent.dart';
+import 'package:image_picker/image_picker.dart';
 
-class editscreen extends StatefulWidget {
-   editscreen({required this.name,required this.age,required this.coures,required this.dateob,required this.numb,required this.email,required this.index});
+class EditScreen extends StatefulWidget {
+  final int? index;
   final String name;
   final String age;
-  final String coures;
-  final String dateob;
-  final String  numb;
-  final String email;
-   final int index;
+  final String course;
+  final String phoneNumber;
+  final dynamic image;
+
+  const EditScreen({super.key, 
+    required this.name,
+    required this.age,
+    required this.course,
+    required this.phoneNumber,
+    required this.image,
+    required this.index,
+
+  });
 
   @override
-  State<editscreen> createState() => _editscreenState();
+  State<EditScreen> createState() => _EditScreenState();
 }
 
-class _editscreenState extends State<editscreen> {
-    
-   final TextEditingController _namecontroller=TextEditingController();
-   final TextEditingController _agecontroller=TextEditingController();
-   final TextEditingController _coursecontroller=TextEditingController();
-   final TextEditingController _dbcontroller=TextEditingController();
-   final TextEditingController _emailcontroller=TextEditingController();
-   final TextEditingController _numbercontroller=TextEditingController();
-
-   @override
-  void initState() {
-    _namecontroller.text=widget.name;
-    _agecontroller.text=widget.age;
-    _coursecontroller.text=widget.coures;
-    _dbcontroller.text=widget.dateob;
-    _emailcontroller.text=widget.email;
-    _numbercontroller.text=widget.numb;
-    super.initState();
-  }
-
+class _EditScreenState extends State<EditScreen> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _courseController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+  File? selectimage;
   @override
-  void dispose() {
-    _namecontroller.dispose();
-    _agecontroller.dispose();
-    _coursecontroller.dispose();
-    _dbcontroller.dispose();
-    _emailcontroller.dispose();
-    _numbercontroller.dispose();
-    super.dispose();
+  void initState() {
+   
+    _nameController.text = widget.name;
+    _ageController.text = widget.age;
+    _courseController.text = widget.course;
+    _phoneNumberController.text = widget.phoneNumber;
+       selectimage = widget.image != null ? File(widget.image) : null;
+        super.initState();
   }
 
+  Future<void> updateStudent(int index) async {
+    final studentDb = await Hive.openBox<studentModel>("student_db");
+
+    if (index >= 0 && index < studentDb.length) {
+      final updatedStudent = studentModel(
+        name: _nameController.text,
+        age: _ageController.text,
+        coures: _courseController.text,
+        numb: _phoneNumberController.text,
+        image: selectimage,
+      );
+
+      await studentDb.putAt(index, updatedStudent);
+      getAllStud();
+
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => const listStudent(),
+      ));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit Student'),
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(40),
-        child: Center(
-          child: Container(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller:_namecontroller ,
-                    decoration: InputDecoration(
-                    labelText: "name",
-                    hintText: widget.name,
-                    prefixIcon:Icon(Icons.person),
-                    )
-                    ),
-                  TextFormField(
-                    controller: _agecontroller,
-                    decoration: InputDecoration(
-                    labelText: "age",
-                    hintText: widget.age,
-                    prefixIcon:Icon(Icons.calendar_month_outlined),
-                    )
-                    ),
-                  TextFormField(
-                    controller: _coursecontroller,
-                    decoration: InputDecoration(
-                    labelText: "coures",
-                    hintText: widget.coures,
-                    prefixIcon:Icon(Icons.book),
-                    )
-                    ),
-                  TextFormField(
-                    controller: _dbcontroller,
-                    decoration: InputDecoration(
-                    labelText: "date of birth",
-                    hintText: widget.dateob,
-                    prefixIcon:Icon(Icons.calendar_view_month_outlined),
-                  )
-                  ),
-                  TextFormField(
-                    controller:_emailcontroller ,
-                    decoration: InputDecoration(
-                    labelText: "email",
-                    hintText: widget.email,
-                    prefixIcon:Icon(Icons.email_outlined),
-                    )
-                    ),
-                  TextFormField(
-                    controller:_numbercontroller ,
-                    decoration: InputDecoration(
-                    labelText: "phone",
-                    hintText: widget.numb ,
-                    prefixIcon:Icon(Icons.phone),
-                    ),
-                  ),
-                  SizedBox(height: 20,),
-                  FloatingActionButton.extended(onPressed: (){
-                    final value=studentModel(
-                      name: _namecontroller.text,
-                      coures: _coursecontroller.text,
-                      age: _agecontroller.text,
-                      dateob: _dbcontroller.text,
-                      email:_emailcontroller.text,
-                      numb: _numbercontroller.text);
-                      Hive.box("student_db").putAt( widget.index, value);
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => listStudent()));
-                  }, label:Text("Update")),
-                ],
+        padding: const EdgeInsets.symmetric(horizontal: 25),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              CircleAvatar(
+                backgroundColor: Colors.black
+                ,radius: 60,
+                 backgroundImage: selectimage != null
+                                ? FileImage(selectimage!)
+                                : AssetImage("assets/images/profile.png")
+                                    as ImageProvider),
+              SizedBox(height: 20,),
+              TextFormField(
+                controller: _nameController,
+                decoration: InputDecoration(
+                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                  labelText: "Name",
+                  prefixIcon: Icon(Icons.person),
+                ),
               ),
-            ),
+                SizedBox(height: 10,),
+              TextFormField(
+                controller: _ageController,
+                decoration:  InputDecoration(
+                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                  labelText: "Age",
+                  prefixIcon: Icon(Icons.calendar_month),
+                ),
+              ),
+               SizedBox(height: 10,),
+               TextFormField(
+                controller: _courseController,
+                decoration:  InputDecoration(
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                  labelText: "course",
+                  prefixIcon: Icon(Icons.book),
+                ),
+              ),
+               SizedBox(height: 10,),
+              TextFormField(
+                controller: _phoneNumberController,
+                decoration: InputDecoration(
+                   border: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
+                  labelText: "phone",
+                  prefixIcon: Icon(Icons.phone),
+                ),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () async {
+                  await updateStudent(widget.index!);
+                },
+                child: const Text("Update"),
+              ),
+            ],
           ),
         ),
       ),
-
     );
   }
-  Future <void>  UpdateAll() async{
-   final na=_namecontroller.text.trim();
-   final cr=_coursecontroller.text.trim();
-   final ag=_agecontroller.text.trim();
-   final em=_emailcontroller.text.trim();
-   final db=_dbcontroller.text.trim();
-   final nu=_numbercontroller.text.trim();
-   if(na.isEmpty||cr.isEmpty||ag.isEmpty||em.isEmpty||db.isEmpty||nu.isEmpty){
-    return;
-   }else{
-    final updatee=studentModel(name: na, coures: cr, age: ag, dateob: db, email: em, numb: nu);
-   }
+  
+  fromgallery() async {
+    final returnedimage =
+        await ImagePicker().pickImage(source:ImageSource.gallery);
+
+    setState(() {
+      selectimage = File(returnedimage!.path);
+    });
   }
+  fromcam() async {
+    final returnedimage =
+        await ImagePicker().pickImage(source:ImageSource .camera);
+    setState(() {
+      selectimage = File(returnedimage!.path);
+    });
+  }
+
 }

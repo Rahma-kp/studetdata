@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
-import 'package:stud/db/model/dbmodel.dart';
+import 'package:stud/db/model/db_model.dart';
 import 'package:stud/screen/liststudent.dart';
 
 ValueNotifier<List<studentModel>>studenlistnotfier =ValueNotifier([]);
@@ -26,8 +26,3 @@ Future<void> deletestud(int index)async{
    await studentDb.deleteAt(index);
   getAllStud();
 }
-
-// Future<void> update(int _id)async{
-//   final studentDb= await Hive.openBox<studentModel>("student_db");
-//   Hive.box(s)
-// }

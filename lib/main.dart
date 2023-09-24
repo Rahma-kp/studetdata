@@ -3,7 +3,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:stud/db/model/dbmodel.dart';
+import 'package:stud/db/model/db_model.dart';
 import 'package:stud/screen/editscreen.dart';
 import 'package:stud/screen/liststudent.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -23,6 +23,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(
+      colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),),
       debugShowCheckedModeBanner: false,
       home:listStudent(),
     );
