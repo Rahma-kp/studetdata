@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 part 'db_model.g.dart';
 
-
-
  @HiveType(typeId: 1)
  class  studentModel{
   
 @HiveField(0)
-    int? index;
+   int? index;
 
   @HiveField(1)
   late final String name;
@@ -19,13 +17,7 @@ part 'db_model.g.dart';
   @HiveField(4)
   late final String numb;
   @HiveField(5)
-  final dynamic image;
-  
-  studentModel({
-  required this.name,
-  required this.coures,
-  required this.age,
-  required this.numb,
-  required this.image});
+  late final String image;
+  studentModel({required this.name,required this.coures,required this.age,required this.numb,this.index,required this.image});
   
 }

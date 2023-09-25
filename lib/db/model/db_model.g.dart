@@ -21,8 +21,9 @@ class studentModelAdapter extends TypeAdapter<studentModel> {
       coures: fields[2] as String,
       age: fields[3] as String,
       numb: fields[4] as String,
-      image: fields[5] as dynamic,
-    )..index = fields[0] as int?;
+      index: fields[0] as int?,
+      image: fields[5] as String,
+    );
   }
 
   @override
