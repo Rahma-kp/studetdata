@@ -140,7 +140,7 @@ class _addstudsState extends State<addstuds> {
                    ElevatedButton(onPressed: (){
                     if(_formkey.currentState!.validate()){
                         onAddStudentOnClick();
-                     Navigator.push(context, MaterialPageRoute(builder: (context) => listStudent()));
+                     Navigator.push(context, MaterialPageRoute(builder: (context) => ListStudent()));
                     }
                    
                    }, child: Text("Add"))

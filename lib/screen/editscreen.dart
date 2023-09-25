@@ -62,7 +62,7 @@ class _EditScreenState extends State<EditScreen> {
       getAllStud();
 
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => const listStudent(),
+        builder: (context) => const ListStudent(),
       ));
     }
   }
