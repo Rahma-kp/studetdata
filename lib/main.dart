@@ -4,7 +4,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:stud/db/model/db_model.dart';
-import 'package:stud/screen/editscreen.dart';
 import 'package:stud/screen/liststudent.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 

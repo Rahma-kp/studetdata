@@ -22,13 +22,12 @@ class _ListStudentState extends State<ListStudent> {
   @override
   void initState() {
     super.initState();
-    // Initialize your studentList here, e.g., calling getAllStud()
+  
     getAllStud();
   }
 
   void filterStudents(String search) {
     if (search.isEmpty) {
-      // If the search query is empty, show all students.
       setState(() {
         filteredStudentList = List.from(studentList);
       });
@@ -56,7 +55,6 @@ class _ListStudentState extends State<ListStudent> {
                 setState(() {
                   isSearching = !isSearching;
                   if (!isSearching) {
-                    // Clear the search query and show all students.
                     searchController.clear();
                     filteredStudentList = List.from(studentList);
                   }
@@ -110,12 +108,12 @@ class _ListStudentState extends State<ListStudent> {
       },
       autofocus: true,
       style: TextStyle(
-        color: Colors.white, // Set the text color to white
+        color: Colors.white, 
       ),
       decoration: InputDecoration(
         hintText: "Search students...",
         hintStyle: TextStyle(
-          color: Colors.white.withOpacity(0.7), // Set the hint text color
+          color: Colors.white.withOpacity(0.7), 
         ),
         border: InputBorder.none,
       ),
@@ -178,7 +176,6 @@ class _ListStudentState extends State<ListStudent> {
     return ValueListenableBuilder(
       valueListenable: studenlistnotfier,
       builder: (BuildContext ctx, List<studentModel> studentlist, Widget? child) {
-        // Update the studentList and filteredStudentList when data changes.
         studentList = studentlist;
         filteredStudentList = List.from(studentList);
 
